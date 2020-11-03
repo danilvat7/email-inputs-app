@@ -1,0 +1,67 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap');
+
+// Fonts
+$fontFamily: 'Open Sans', sans-serif;
+// Colors
+$mainColor: #050038;
+$secondaryColor: #c3c2cf;
+$errorColor: #d92929;
+// Backgrounds
+$whiteBg: #ffffff;
+$chipBg: rgba(102, 153, 255, 0.2);
+
+.email-inputs {
+  font-family: $fontFamily;
+  font-size: 14px;
+  line-height: 23px;
+  border-radius: 4px;
+  color: $mainColor;
+  background-color: $whiteBg;
+  border: 1px solid $secondaryColor;
+  padding: 8px 7px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  height: 78px;
+  overflow-y: auto;
+
+  &--chip {
+    background-color: $chipBg;
+    border-radius: 100px;
+    padding: 0 24px 0 10px;
+    margin-right: 8px;
+    position: relative;
+    margin-bottom: 3px;
+    &__invalid {
+      background-color: $whiteBg;
+      border-bottom: 1px dashed $errorColor;
+      border-radius: 0;
+      padding-left: 0;
+    }
+  }
+
+  &--chip-close {
+    position: absolute;
+    right: 8px;
+    top: -2px;
+    z-index: 0;
+    display: block;
+    cursor: pointer;
+    svg {
+      pointer-events: none;
+    }
+  }
+
+  &--input {
+    color: $mainColor;
+    font-family: $fontFamily;
+    font-size: 14px;
+    line-height: 23px;
+    padding: 0;
+    outline: 0;
+    border: 0;
+    &::placeholder {
+      color: $secondaryColor;
+    }
+  }
+}
