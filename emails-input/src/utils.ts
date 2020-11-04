@@ -6,7 +6,7 @@ export function fadeOut(el: any, cb?: () => void) {
   (function fade() {
     if ((el.style.opacity -= 0.1) < 0) {
       el.style.display = 'none';
-      cb();
+      cb && cb();
     } else {
       requestAnimationFrame(fade);
     }
@@ -30,4 +30,10 @@ export function randomEmailGenerator(): string {
     Math.random().toString(36).substring(2, 5) +
     Math.random().toString(36).substring(2, 5)
   }@test.com`;
+}
+
+export function triggerEvent(el: Element, type: string) {
+  var e = document.createEvent('HTMLEvents');
+  e.initEvent(type, false, true);
+  el.dispatchEvent(e);
 }

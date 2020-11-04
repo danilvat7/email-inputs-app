@@ -1,10 +1,14 @@
 {
   "compilerOptions": {
     "outDir": "./dist/",
+    "rootDir": "src",
     "noImplicitAny": true,
-    "module": "es6",
+    "module": "commonjs",
     "target": "es5",
     "allowJs": false,
-    "sourceMap": true
+    "sourceMap": true,
+    "esModuleInterop": true,
+    "types": ["node", "jest"],
+    "typeRoots" : ["./node_modules/@types"],
   }
 }

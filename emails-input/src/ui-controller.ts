@@ -33,10 +33,11 @@ export default class UICtrl {
 
   /**
    * Returns Input Element
+   * @private
    * @readonly
    * @type {HTMLInputElement}
    */
-  get inputElement(): HTMLInputElement {
+  private get inputElement(): HTMLInputElement {
     return this.mainContainer.querySelector(`.${this.selectors.input}`);
   }
 
@@ -166,8 +167,8 @@ export default class UICtrl {
     this.addedEmails = this.addedEmails.filter(
       (addedEmail) => addedEmail.email !== email
     );
-    fadeOut(chip, () => this.mainContainer.removeChild(chip));
 
+    fadeOut(chip, () => this.mainContainer.removeChild(chip));
     // Calls user's callback
     this.params?.onEmailRemove && this.params.onEmailRemove(email);
   }

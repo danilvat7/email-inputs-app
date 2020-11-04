@@ -10,7 +10,7 @@ import { randomEmailGenerator } from './utils';
  * @class EmailsInput
  * @extends {UICtrl}
  */
-class EmailsInput extends UICtrl {
+export class EmailsInput extends UICtrl {
   /**
    * Creates an instance of EmailsInput.
    * @param {HTMLElement} userContainerEl
