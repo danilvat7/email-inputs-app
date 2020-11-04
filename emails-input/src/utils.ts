@@ -27,7 +27,7 @@ export function fadeIn(el: any, display: string = 'block') {
 
 export function randomEmailGenerator(): string {
   return `${
-    Math.random().toString(36).substring(2, 10) +
-    Math.random().toString(36).substring(2, 10)
+    Math.random().toString(36).substring(2, 5) +
+    Math.random().toString(36).substring(2, 5)
   }@test.com`;
 }

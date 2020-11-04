@@ -1,0 +1,70 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap');
+
+html {
+    box-sizing: border-box;
+    font-size: 16px;
+  }
+  
+  *, *:before, *:after {
+    box-sizing: inherit;
+  }
+  
+  body, h1, h2, h3, h4, h5, h6, p, ol, ul {
+    margin: 0;
+    padding: 0;
+    font-weight: normal;
+  }
+  
+  ol, ul {
+    list-style: none;
+  }
+  
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+
+* {
+    font-family: 'Open Sans', sans-serif;
+}
+#main {
+    padding: 50px;
+}
+#main h1{
+    margin-bottom: 30px;
+}
+.share-board-name {
+    width: 540px;
+    background: #FFFFFF;
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+}
+
+.share-board-name--body {
+    padding: 32px 50px 24px;
+    background-color: #F8F8F7;
+    color: #050038;
+}
+
+.share-board-name--body h2{
+    font-size: 20px;
+    line-height: 27px;
+    margin-bottom: 25px;
+}
+
+.share-board-name--actions{
+    padding: 24px 50px 32px;
+}
+
+.share-board-name--btn{
+    background-color: #4262FF;
+    border-radius: 6px;
+    color: #ffffff;
+    font-size: 14px;
+    line-height: 40px;
+    padding: 0 16px;
+    border: 0;
+    outline: 0;
+    cursor: pointer;
+    margin-right: 12px;
+}

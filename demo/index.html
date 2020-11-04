@@ -6,17 +6,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script src="./../emails-input/dist/emails-input.js"></script>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <h1>Test</h1>
-    <div id="emails-input"></div>
-    <div id="emails-input-2"></div>
+    <main id="main">
+        <h1>Emails Input Demo</h1>
+        <div class="share-board-name">
+            <div class="share-board-name--body">
+                <h2>Share <strong>Board name</strong> with others</h2>
+                <div id="emails-input"></div>
+            </div>
+            <div class="share-board-name--actions">
+                <button id="add-email-btn" class="share-board-name--btn">Add email</button>
+                <button id="get-emails-count-btn" class="share-board-name--btn">Get emails count</button>
+            </div>
+        </div>
+
+    </main>
     <script>
-        const emailsInput = document.getElementById('emails-input');
-        const emailsInput2 = document.getElementById('emails-input-2');
-        EmailInputs(emailsInput)
-        EmailInputs(emailsInput2)
+        // Inits emails-input
+        const emailsInputContainer = document.getElementById('emails-input');
+        const emailsInput = EmailsInput(emailsInputContainer, { onEmailAdd: (val) => console.log('Emails were added: ', val), onEmailRemove: val => console.log('Email was removed: ', val) });
+
+        document.getElementById('add-email-btn').addEventListener('click', () => emailsInput.addEmail());
+        document.getElementById('get-emails-count-btn').addEventListener('click', () => alert(`There are ${emailsInput.validAddedEmails.length} valid email(s).`))
+
     </script>
 </body>
 
