@@ -1,17 +1,28 @@
+/*
+ * UI Controller
+ */
 import {
   ADD_CHIP_EVENTS,
   DEFAULT_PLACEHOLDER,
   EMAIL_REGEX,
   REMOVE_ICON_SVG,
 } from './constans';
-import { IAddedEmail } from './interfaces';
-import './styles.scss';
+import { IAddedEmail, IEmailsInputParams } from './interfaces';
 import { fadeIn, fadeOut } from './utils';
 
-class UICtrl {
-  mainContainer: HTMLElement;
-  addedEmails: IAddedEmail[] = [];
+/**
+ * @export
+ * @class UICtrl
+ */
+export default class UICtrl {
+  protected addedEmails: IAddedEmail[] = [];
 
+  private mainContainer: HTMLElement;
+  /**
+   * UI selectors
+   * @private
+   * @type {{ [key: string]: string }}
+   */
   private selectors: { [key: string]: string } = {
     container: 'email-inputs',
     input: 'email-inputs--input',
@@ -20,27 +31,44 @@ class UICtrl {
     chipRemove: 'email-inputs--chip-close',
   };
 
+  /**
+   * Returns Input Element
+   * @readonly
+   * @type {HTMLInputElement}
+   */
   get inputElement(): HTMLInputElement {
-    return document.querySelector(`.${this.selectors.input}`);
+    return this.mainContainer.querySelector(`.${this.selectors.input}`);
   }
 
+  /**
+   * Creates an instance of UICtrl.
+   * @param {HTMLElement} userContainerEl
+   * @param {IEmailsInputParams} [params]
+   */
   constructor(
     private userContainerEl: HTMLElement,
-    private inputPlaceholder: string = DEFAULT_PLACEHOLDER
+    protected params?: IEmailsInputParams
   ) {}
 
+  /**
+   * Creates app HTML element and adds it to user's UI conatiner
+   * @protected
+   */
   protected createComponent(): void {
     const container = document.createElement('div');
     container.classList.add(this.selectors.container);
-    container.innerHTML = `<input type="text" class="${this.selectors.input}" placeholder="${this.inputPlaceholder}">`;
+    container.innerHTML = `<input type="text" class="${
+      this.selectors.input
+    }" placeholder="${this.params?.placeholder || DEFAULT_PLACEHOLDER}">`;
     this.mainContainer = container;
     this.userContainerEl.appendChild(container);
   }
 
-  protected loadEventListeners(
-    onChipRemoveFn: (el: HTMLElement) => void,
-    onAddChipFn: (el: HTMLElement) => void
-  ) {
+  /**
+   * Loads all events listeners
+   * @protected
+   */
+  protected loadEventListeners() {
     // On Chip Remove Click event
     this.mainContainer.addEventListener('click', (event: MouseEvent) => {
       const el = event.target as HTMLElement;
@@ -48,7 +76,7 @@ class UICtrl {
         this.selectors.chipRemove
       );
       if (isChipRemoveClicked) {
-        onChipRemoveFn(el.parentElement);
+        this.removeChip(el.parentElement);
       }
     });
 
@@ -58,15 +86,23 @@ class UICtrl {
         const el = event.target as HTMLInputElement;
         const { code, type } = event;
 
-        if (code === 'Enter' || code === 'Comma' || type === 'blur') {
-          event.preventDefault();
-          onAddChipFn(el);
+        if (
+          el.value &&
+          (code === 'Enter' || code === 'Comma' || type === 'blur')
+        ) {
+          this.addChips(el.value);
         }
       });
     });
   }
 
-  public addChips(emails: string = ''): void {
+  /**
+   * Splits, validates and adds new chips
+   * @protected
+   * @param {string} [emails='']
+   * @return {*}  {void}
+   */
+  protected addChips(emails: string = ''): void {
     const emailsArr = emails.trim().split(',');
 
     if (!emailsArr.length) {
@@ -74,12 +110,16 @@ class UICtrl {
     }
 
     const emailsFragment = document.createDocumentFragment();
+    const currentAddedEmails: IAddedEmail[] = [];
+
     emailsArr.forEach((email) => {
       email = email.trim();
       if (!!email.length) {
         const addedEmail: IAddedEmail = {
           email,
-          isValid: EMAIL_REGEX.test(email),
+          isValid: (this.params?.emailValidationRules || EMAIL_REGEX).test(
+            email
+          ),
         };
         const chip = document.createElement('div');
 
@@ -91,7 +131,7 @@ class UICtrl {
         chip.innerHTML = `${email} <span class="${this.selectors.chipRemove}">${REMOVE_ICON_SVG}</span>`;
         emailsFragment.appendChild(chip);
 
-        this.addedEmails.push(addedEmail);
+        currentAddedEmails.push(addedEmail);
       }
     });
 
@@ -102,54 +142,33 @@ class UICtrl {
         fadeIn(element);
       });
 
+    // Inserts chips to UI
     this.mainContainer.insertBefore(
       emailsFragment,
       this.mainContainer.children[this.mainContainer.children.length - 1]
     );
 
     this.inputElement.value = '';
+
+    this.addedEmails = [...this.addedEmails, ...currentAddedEmails];
+
+    // Calls user's callback
+    this.params?.onEmailAdd && this.params.onEmailAdd(currentAddedEmails);
   }
 
-  public removeChip(chip: HTMLElement): void {
+  /**
+   * Removes chip
+   * @protected
+   * @param {HTMLElement} chip
+   */
+  protected removeChip(chip: HTMLElement): void {
     const email = chip.innerHTML.split(' ')[0];
     this.addedEmails = this.addedEmails.filter(
       (addedEmail) => addedEmail.email !== email
     );
     fadeOut(chip, () => this.mainContainer.removeChild(chip));
+
+    // Calls user's callback
+    this.params?.onEmailRemove && this.params.onEmailRemove(email);
   }
 }
-
-class EmailInputs extends UICtrl {
-  constructor(userContainerEl: HTMLElement) {
-    super(userContainerEl);
-    this.init();
-  }
-
-  private init(): void {
-    // Create Email Inputs compoentns and append to container
-    this.createComponent();
-
-    // Register Events Listeners
-    this.loadEventListeners(
-      this.onChipRemoveClick.bind(this),
-      this.onAddChip.bind(this)
-    );
-  }
-
-  private onChipRemoveClick(chip: HTMLElement) {
-    this.removeChip(chip);
-  }
-
-  private onAddChip(input: HTMLInputElement) {
-    this.addChips(input.value);
-  }
-}
-
-const initApp = (container: HTMLElement): EmailInputs => {
-  if (!container) {
-    throw new Error('Please provide HTML container first');
-  }
-  return new EmailInputs(container);
-};
-
-(window as any).EmailInputs = initApp;

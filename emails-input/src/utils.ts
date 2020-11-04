@@ -1,7 +1,6 @@
 /*
  *  Helper functions
  */
-
 export function fadeOut(el: any, cb?: () => void) {
   el.style.opacity = 1;
   (function fade() {
@@ -24,4 +23,11 @@ export function fadeIn(el: any, display: string = 'block') {
       requestAnimationFrame(fade);
     }
   })();
+}
+
+export function randomEmailGenerator(): string {
+  return `${
+    Math.random().toString(36).substring(2, 10) +
+    Math.random().toString(36).substring(2, 10)
+  }@test.com`;
 }

@@ -9,11 +9,15 @@
 
 <body>
     <div id="emails-input" style="width: 440px;"></div>
+    <br>
+    <div id="emails-input-2" style="width: 440px;"></div>
     <script>
 
         window.addEventListener('load', () => {
             const emailsInputContainer = document.getElementById('emails-input');
-            const emailInputs = EmailInputs(emailsInputContainer);
+            const emailsInputContainer2 = document.getElementById('emails-input-2');
+            const emailsInput = EmailsInput(emailsInputContainer);
+            EmailsInput(emailsInputContainer2, { placeholder: 'Test', emailValidationRules: new RegExp(''), onEmailAdd: (val) => console.log(val), onEmailRemove: val => console.log(val) });
         });
     </script>
     <img src="" alt="" srcset="">

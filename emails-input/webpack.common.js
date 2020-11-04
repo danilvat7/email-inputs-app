@@ -21,7 +21,7 @@ module.exports = {
     extensions: ['.tsx', '.ts', '.js'],
   },
   output: {
-    filename: 'email-inputs.js',
+    filename: 'emails-input.js',
     path: path.resolve(__dirname, 'dist'),
   },
   plugins: [
