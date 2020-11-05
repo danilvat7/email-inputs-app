@@ -40,7 +40,7 @@ export class EmailsInput extends UICtrl {
    * @param {string} [email=randomEmailGenerator()]
    * @memberof EmailsInput
    */
-  public addEmail(email: string = randomEmailGenerator()) {
+  public addEmail(email: string = randomEmailGenerator()): void {
     this.addChips(email);
   }
 
@@ -50,7 +50,7 @@ export class EmailsInput extends UICtrl {
    * @type {IAddedEmail[]}
    * @memberof EmailsInput
    */
-  public get validAddedEmails(): IAddedEmail[] {
+  public getValidAddedEmails(): IAddedEmail[] {
     return this.addedEmails.filter((email) => email.isValid);
   }
 }

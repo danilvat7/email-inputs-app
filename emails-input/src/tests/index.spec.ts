@@ -36,7 +36,7 @@ describe('Emails Input', () => {
 
   test('should return valid emails', () => {
     emailsInput['addedEmails'] = mockEmails;
-    expect(emailsInput.validAddedEmails).toMatchObject(
+    expect(emailsInput.getValidAddedEmails()).toMatchObject(
       mockEmails.filter((email) => email.isValid)
     );
   });

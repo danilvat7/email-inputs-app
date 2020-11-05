@@ -24,15 +24,18 @@
 
     </main>
 
-    <script src="node_modules/email-inputs/dist/emails-input.js"></script>
+    <script src="../emails-input/dist/emails-input.js"></script>
 
     <script>
-        // Inits emails-input
         var emailsInputContainer = document.getElementById('emails-input');
-        var emailsInput = EmailsInput(emailsInputContainer, { onEmailAdd: function (val) { console.log('Emails were added: ', val) }, onEmailRemove: function (val) { console.log('Email was removed: ', val) } });
+        var emailsInput = EmailsInput(emailsInputContainer,
+            {
+                onEmailAdd: function (val) { console.log('Emails were added: ', val) },
+                onEmailRemove: function (val) { console.log('Email was removed: ', val) }
+            });
 
         document.getElementById('add-email-btn').addEventListener('click', function () { emailsInput.addEmail() });
-        document.getElementById('get-emails-count-btn').addEventListener('click', function () { alert('There are ' + emailsInput.validAddedEmails.length + ' valid email(s).') })
+        document.getElementById('get-emails-count-btn').addEventListener('click', function () { alert('There are ' + emailsInput.getValidAddedEmails().length + ' valid email(s).') })
 
     </script>
 </body>
