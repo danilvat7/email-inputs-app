@@ -1,13 +1,14 @@
-import { IAddedEmail } from '../interfaces';
+import { IAddedEmail } from './../interfaces';
+import { randomString } from '../utils';
 import { EmailsInput } from './../index';
 
 jest.mock('./../ui-controller');
 
 const mockEmail = 'test@test.com';
 const mockEmails: IAddedEmail[] = [
-  { email: mockEmail, isValid: true },
-  { email: mockEmail, isValid: true },
-  { email: 'invalid.email', isValid: false },
+  { id: randomString(), email: mockEmail, isValid: true },
+  { id: randomString(), email: mockEmail, isValid: true },
+  { id: randomString(), email: 'invalid.email', isValid: false },
 ];
 describe('Emails Input', () => {
   let emailsInput: EmailsInput;
@@ -26,7 +27,7 @@ describe('Emails Input', () => {
     expect(emailsInput['loadEventListeners']).toHaveBeenCalled();
   });
 
-  test('should addChips method', () => {
+  test('should call addChips method', () => {
     emailsInput['addChips'] = jest.fn();
     emailsInput['addEmail'](mockEmail);
 

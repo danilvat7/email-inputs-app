@@ -6,9 +6,9 @@ import {
   DEFAULT_PLACEHOLDER,
   EMAIL_REGEX,
   REMOVE_ICON_SVG,
-} from './constans';
-import { IAddedEmail, IEmailsInputParams } from './interfaces';
-import { fadeIn, fadeOut } from './utils';
+} from './../constans';
+import { IAddedEmail, IEmailsInputParams } from './../interfaces';
+import { fadeIn, fadeOut, isTargetKeyPressed, randomString } from './../utils';
 
 /**
  * @export
@@ -85,12 +85,9 @@ export default class UICtrl {
     ADD_CHIP_EVENTS.forEach((ev) => {
       this.inputElement.addEventListener(ev, (event: KeyboardEvent) => {
         const el = event.target as HTMLInputElement;
-        const { code, type } = event;
+        const { type } = event;
 
-        if (
-          el.value &&
-          (code === 'Enter' || code === 'Comma' || type === 'blur')
-        ) {
+        if (el.value && (isTargetKeyPressed(event) || type === 'blur')) {
           this.addChips(el.value);
         }
       });
@@ -117,13 +114,14 @@ export default class UICtrl {
       email = email.trim();
       if (!!email.length) {
         const addedEmail: IAddedEmail = {
+          id: randomString(),
           email,
           isValid: (this.params?.emailValidationRules || EMAIL_REGEX).test(
             email
           ),
         };
         const chip = document.createElement('div');
-
+        chip.setAttribute('data-id', addedEmail.id);
         chip.classList.add(this.selectors.chip);
 
         if (!addedEmail.isValid) {
@@ -137,11 +135,9 @@ export default class UICtrl {
     });
 
     // Animating chips appearance
-    Array.prototype.slice
-      .call(emailsFragment.children)
-      .forEach((element: HTMLElement) => {
-        fadeIn(element);
-      });
+    for (let i = 0; i < emailsFragment.children?.length; i++) {
+      fadeIn(emailsFragment.children[i]);
+    }
 
     // Inserts chips to UI
     this.mainContainer.insertBefore(
@@ -151,7 +147,7 @@ export default class UICtrl {
 
     this.inputElement.value = '';
 
-    this.addedEmails = [...this.addedEmails, ...currentAddedEmails];
+    this.addedEmails = this.addedEmails.concat(currentAddedEmails);
 
     // Calls user's callback
     this.params?.onEmailAdd && this.params.onEmailAdd(currentAddedEmails);
@@ -164,8 +160,9 @@ export default class UICtrl {
    */
   protected removeChip(chip: HTMLElement): void {
     const email = chip.innerHTML.split(' ')[0];
+    const emailId = chip.getAttribute('data-id');
     this.addedEmails = this.addedEmails.filter(
-      (addedEmail) => addedEmail.email !== email
+      (addedEmail) => addedEmail.id !== emailId
     );
 
     fadeOut(chip, () => this.mainContainer.removeChild(chip));

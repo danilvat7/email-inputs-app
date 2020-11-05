@@ -7,13 +7,9 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.tsx?$/,
+        test: /\.ts$/,
+        exclude: /node_modules/,
         loader: 'babel-loader',
-      },
-      {
-        test: /\.js$/,
-        use: ['source-map-loader'],
-        enforce: 'pre',
       },
       {
         test: /\.tsx?$/,

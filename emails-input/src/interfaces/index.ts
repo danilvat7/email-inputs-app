@@ -8,6 +8,7 @@ export interface IEmailsInputParams {
   onEmailRemove?: (email: string) => void;
 }
 export interface IAddedEmail {
+  id: string;
   email: string;
   isValid: boolean;
 }
