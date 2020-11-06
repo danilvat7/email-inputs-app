@@ -6,7 +6,7 @@ import {
   DEFAULT_PLACEHOLDER,
   EMAIL_REGEX,
   REMOVE_ICON_SVG,
-} from './../constans';
+} from './../constants';
 import { IAddedEmail, IEmailsInputParams } from './../interfaces';
 import { fadeIn, fadeOut, isTargetKeyPressed, randomString } from './../utils';
 
